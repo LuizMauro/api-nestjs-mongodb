@@ -3,6 +3,10 @@ import { Address } from './address.model';
 import { CreditCard } from './credit-card.model';
 import { User } from './user.model';
 
+import { Document } from 'mongoose';
+
+export type CustomerDocument = Customer & Document;
+
 export class Customer {
   constructor(
     public name: string,
