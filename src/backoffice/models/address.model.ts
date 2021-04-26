@@ -1,3 +1,7 @@
+import { Document } from 'mongoose';
+
+export type AddressDocument = Address & Document;
+
 export class Address {
   constructor(
     public zipCode: string,
