@@ -12,6 +12,7 @@ import {
 import { ValidatorInterceptor } from '../../interceptors/validator.interceptor';
 import { CreateCustomerContract } from '../contracts/customer/create-customer.contracts';
 import { CreateAddressContract } from '../contracts/customer/create-address.contract';
+import { CreatePetContract } from '../contracts/customer/create-pets.contract';
 
 import { CreateCustomerDTO } from '../dtos/create-customer-dto';
 import { Result } from '../models/result.model';
@@ -21,6 +22,7 @@ import { Address } from '../models/address.model';
 
 import { AccountService } from '../services/account.service';
 import { CustomerService } from '../services/customer.service';
+import { Pet } from '../models/pet.model';
 
 @Controller('v1/customers')
 export class CustomerController {
@@ -28,16 +30,6 @@ export class CustomerController {
     private readonly accountService: AccountService,
     private readonly customerService: CustomerService,
   ) {}
-
-  @Get()
-  get() {
-    return new Result(null, true, [], null);
-  }
-
-  @Get(':document')
-  getById(@Param('document') document) {
-    return new Result(null, true, {}, null);
-  }
 
   @Post()
   @UseInterceptors(new ValidatorInterceptor(new CreateCustomerContract()))
@@ -51,7 +43,7 @@ export class CustomerController {
         model.name,
         model.document,
         model.email,
-        null,
+        [],
         null,
         null,
         null,
@@ -115,13 +107,35 @@ export class CustomerController {
     }
   }
 
-  @Put(':document')
-  put(@Param('document') document, @Body() body) {
-    return new Result('Cliente alterado com sucesso', true, body, null);
+  @Post(':document/pets')
+  @UseInterceptors(new ValidatorInterceptor(new CreatePetContract()))
+  async createPet(@Param('document') document, @Body() model: Pet) {
+    try {
+      await this.customerService.createPet(document, model);
+      return new Result(null, true, model, null);
+    } catch (error) {
+      throw new HttpException(
+        new Result('Não foi possivel adicionar seu pet', false, null, error),
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
-  @Delete(':document')
-  delete(@Param('document') document) {
-    return new Result('Cliente removido com sucesso', true, {}, null);
+  @Put(':document/pets/:id')
+  @UseInterceptors(new ValidatorInterceptor(new CreatePetContract()))
+  async updatePet(
+    @Param('document') document,
+    @Param('id') id,
+    @Body() model: Pet,
+  ) {
+    try {
+      await this.customerService.updatePet(document, id, model);
+      return new Result(null, true, model, null);
+    } catch (error) {
+      throw new HttpException(
+        new Result('Não foi alterar seu pet', false, null, error),
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 }
