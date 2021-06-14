@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { CustomerDocument, Customer } from '../models/customer.model';
 import { AddressDocument, Address } from '../models/address.model';
 import { Pet } from '../models/pet.model';
+import { QueryDTO } from '../dtos/query.dto';
 
 @Injectable()
 export class CustomerService {
@@ -64,5 +65,31 @@ export class CustomerService {
         },
       },
     );
+  }
+
+  async findAll(): Promise<Customer[]> {
+    // return await this.model.find({}, '-pets').exec();
+    return await this.model
+      .find({})
+      .populate('user', 'username')
+      .sort('name')
+      .exec();
+  }
+
+  async find(document): Promise<Customer> {
+    return await this.model
+      .findOne({ document })
+      .populate('user', 'username')
+      .exec();
+  }
+
+  async query(model: QueryDTO): Promise<Customer[]> {
+    return await this.model
+      .find(model.query, model.fields, {
+        skip: model.skip,
+        limit: model.take,
+      })
+      .sort(model.sort)
+      .exec();
   }
 }
