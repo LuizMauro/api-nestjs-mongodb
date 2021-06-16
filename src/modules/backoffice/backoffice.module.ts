@@ -7,6 +7,7 @@ import { UserSchema } from './schemas/user.schema';
 
 import { AccountService } from './services/account.service';
 import { CustomerService } from './services/customer.service';
+import { AddressService } from './services/address.service';
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -21,6 +22,6 @@ import { CustomerService } from './services/customer.service';
     ]),
   ],
   controllers: [CustomerController],
-  providers: [AccountService, CustomerService],
+  providers: [AddressService, AccountService, CustomerService],
 })
 export class BackofficeModule {}
