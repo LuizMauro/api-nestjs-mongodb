@@ -8,8 +8,8 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 
-import { Result } from 'src/backoffice/models/result.model';
-import { Contract } from '../backoffice/contracts/contract';
+import { Result } from 'src/modules/backoffice/models/result.model';
+import { Contract } from '../modules/backoffice/contracts/contract';
 
 @Injectable()
 export class ValidatorInterceptor implements NestInterceptor {
