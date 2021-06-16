@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { CustomerController } from './controllers/customer.controller';
 import { AddressController } from './controllers/address.controller';
+import { PetController } from './controllers/pet.controller';
 
 import { MongooseModule } from '@nestjs/mongoose';
 
@@ -24,7 +25,7 @@ import { PetService } from './services/pet.service';
       },
     ]),
   ],
-  controllers: [CustomerController, AddressController],
+  controllers: [CustomerController, AddressController, PetController],
   providers: [AddressService, AccountService, CustomerService, PetService],
 })
 export class BackofficeModule {}
