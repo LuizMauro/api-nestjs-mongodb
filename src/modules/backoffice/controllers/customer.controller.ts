@@ -10,6 +10,7 @@ import {
 
 import { ValidatorInterceptor } from '../../../interceptors/validator.interceptor';
 import { CreateCustomerContract } from '../contracts/customer/create-customer.contracts';
+import { QueryContract } from '../contracts/query.contract';
 
 import { CreateCustomerDTO } from '../dtos/customer/create-customer-dto';
 import { QueryDTO } from '../dtos/query.dto';
@@ -91,6 +92,7 @@ export class CustomerController {
   }
 
   @Post('query')
+  @UseInterceptors(new ValidatorInterceptor(new QueryContract()))
   async query(@Body() model: QueryDTO) {
     const customers = await this.customerService.query(model);
 

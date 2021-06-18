@@ -40,4 +40,10 @@ export class Flunt {
   isValid() {
     return this.errors.length === 0;
   }
+
+  isGreaterThan = (valuea, valueb, message) => {
+    if (valuea > valueb) {
+      this.errors.push(message);
+    }
+  };
 }
