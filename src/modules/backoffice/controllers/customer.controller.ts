@@ -1,10 +1,17 @@
 import { Body, HttpException, HttpStatus } from '@nestjs/common';
-import { Controller, Get, Post, Param, UseInterceptors } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Param,
+  UseInterceptors,
+} from '@nestjs/common';
 
 import { ValidatorInterceptor } from '../../../interceptors/validator.interceptor';
 import { CreateCustomerContract } from '../contracts/customer/create-customer.contracts';
 
-import { CreateCustomerDTO } from '../dtos/create-customer-dto';
+import { CreateCustomerDTO } from '../dtos/customer/create-customer-dto';
 import { QueryDTO } from '../dtos/query.dto';
 import { Result } from '../models/result.model';
 import { User } from '../models/user.model';
@@ -12,6 +19,8 @@ import { Customer } from '../models/customer.model';
 
 import { AccountService } from '../services/account.service';
 import { CustomerService } from '../services/customer.service';
+import { UpdateCustomerContract } from '../contracts/customer/update-customer-contracts';
+import { UpdateCustomerDTO } from '../dtos/customer/update-customer-dto';
 
 @Controller('v1/customers')
 export class CustomerController {
@@ -50,6 +59,20 @@ export class CustomerController {
           null,
           error,
         ),
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  @Put(':document')
+  @UseInterceptors(new ValidatorInterceptor(new UpdateCustomerContract()))
+  async update(@Param('document') document, @Body() model: UpdateCustomerDTO) {
+    try {
+      await this.customerService.update(document, model);
+      return new Result(null, true, model, null);
+    } catch (error) {
+      throw new HttpException(
+        new Result('Não foi possivel atualizar', false, null, null),
         HttpStatus.BAD_REQUEST,
       );
     }

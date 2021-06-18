@@ -3,7 +3,7 @@ import { Controller, Post, Param, UseInterceptors } from '@nestjs/common';
 
 import { ValidatorInterceptor } from '../../../interceptors/validator.interceptor';
 
-import { CreateAddressContract } from '../contracts/customer/create-address.contract';
+import { CreateAddressContract } from '../contracts/address/create-address.contract';
 
 import { Result } from '../models/result.model';
 import { Address } from '../models/address.model';
