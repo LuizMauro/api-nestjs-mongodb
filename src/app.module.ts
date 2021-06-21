@@ -4,8 +4,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { StoreModule } from './modules/store/store.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { Product } from 'src/modules/store/entities/product.entity';
-
 @Module({
   imports: [
     MongooseModule.forRoot(
@@ -18,7 +16,8 @@ import { Product } from 'src/modules/store/entities/product.entity';
       username: 'root',
       password: '123456',
       database: 'api-nest',
-      entities: [Product],
+      // entities: [Product],
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
     BackofficeModule,
