@@ -13,4 +13,8 @@ export class AccountService {
     const user = new this.model(data);
     return await user.save();
   }
+
+  async findOneByUsername(username) {
+    return new User(username, '46493364817', true);
+  }
 }
