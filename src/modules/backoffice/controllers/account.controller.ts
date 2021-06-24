@@ -1,13 +1,21 @@
+import { Req } from '@nestjs/common';
 import { Controller, Get, UseGuards, Post } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from 'src/shared/guards/auth.guard';
+import { AuthService } from 'src/shared/services/auth.service';
 
 @Controller('v1/accounts')
 export class AccountController {
-  constructor() {}
+  constructor(private authService: AuthService) {}
+
+  @Post('')
+  async createToken(): Promise<any> {
+    return await this.authService.createToken();
+  }
 
   @Get('')
-  @UseGuards(AuthGuard())
-  findAll() {
+  @UseGuards(JwtAuthGuard)
+  findAll(@Req() request) {
+    console.log(request.user);
     return [];
   }
 }
