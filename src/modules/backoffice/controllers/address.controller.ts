@@ -1,4 +1,4 @@
-import { Body, HttpException, HttpStatus } from '@nestjs/common';
+import { Body, Get, HttpException, HttpStatus } from '@nestjs/common';
 import { Controller, Post, Param, UseInterceptors } from '@nestjs/common';
 
 import { ValidatorInterceptor } from '../../../interceptors/validator.interceptor';
@@ -50,6 +50,26 @@ export class AddressController {
           'Não foi possivel adicionar seu endereço',
           false,
           null,
+          error,
+        ),
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  @Get('search/:zipcode')
+  async search(@Param('zipcode') zipcode) {
+    try {
+      const response = await this.service
+        .getAddressByZipCode(zipcode)
+        .toPromise();
+      return new Result(null, true, response.data, null);
+    } catch (error) {
+      throw new HttpException(
+        new Result(
+          'Não foi possivel localigar seu endereço',
+          null,
+          false,
           error,
         ),
         HttpStatus.BAD_REQUEST,
