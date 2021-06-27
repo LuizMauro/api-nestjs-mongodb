@@ -1,4 +1,9 @@
-import { Body, HttpException, HttpStatus } from '@nestjs/common';
+import {
+  Body,
+  CacheInterceptor,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import {
   Controller,
   Get,
@@ -83,6 +88,7 @@ export class CustomerController {
   }
 
   @Get()
+  @UseInterceptors(CacheInterceptor)
   async getAll() {
     const customers = await this.customerService.findAll();
     return new Result(null, true, customers, null);
